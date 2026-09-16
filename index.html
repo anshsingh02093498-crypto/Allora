@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ReLink — Donation Prototype</title>
+<style>
+:root{--bg:#f6f7f4;--card:#fff;--text:#17211b;--muted:#68736b;--line:#dfe5df;--accent:#286b4a;--accent2:#dcefe4;--warn:#fff3d6;--danger:#f9e0e0}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;background:var(--bg);color:var(--text)}
+button,input,select{font:inherit}.app{min-height:100vh}.nav{height:70px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 6%;position:sticky;top:0;z-index:5}.brand{font-size:24px;font-weight:800;letter-spacing:-1px}.brand span{color:var(--accent)}.navlinks{display:flex;gap:8px}.nav button{border:0;background:transparent;padding:10px 14px;border-radius:10px;cursor:pointer;color:#526057}.nav button.active{background:var(--accent2);color:var(--accent);font-weight:700}
+main{max-width:1120px;margin:auto;padding:44px 24px 70px}.view{display:none}.view.active{display:block}.hero{display:grid;grid-template-columns:1.25fr .75fr;gap:30px;align-items:stretch}.heroText{padding:28px 0}.eyebrow{display:inline-block;background:var(--accent2);color:var(--accent);padding:7px 11px;border-radius:999px;font-size:13px;font-weight:700}.hero h1{font-size:52px;line-height:1.03;letter-spacing:-2.5px;margin:18px 0 16px}.hero p{font-size:18px;line-height:1.65;color:var(--muted);max-width:650px}.heroCard{background:var(--card);border:1px solid var(--line);border-radius:24px;padding:26px;box-shadow:0 12px 35px #1b2b2210}.heroCard h3{margin-top:0}.flow{display:grid;gap:13px;margin-top:20px}.flowItem{display:flex;align-items:center;gap:13px;padding:14px;border:1px solid var(--line);border-radius:14px}.icon{width:38px;height:38px;border-radius:11px;background:var(--accent2);display:grid;place-items:center;font-weight:800;color:var(--accent)}
+.sectionTitle{display:flex;justify-content:space-between;align-items:end;margin:48px 0 18px}.sectionTitle h2{margin:0;font-size:27px}.muted{color:var(--muted)}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px}.stat{font-size:32px;font-weight:800;margin-top:8px}.formGrid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.field{display:flex;flex-direction:column;gap:8px}.field.full{grid-column:1/-1}.field label{font-weight:700;font-size:14px}.field input,.field select,.field textarea{border:1px solid var(--line);background:#fff;border-radius:11px;padding:12px 13px;outline:none}.field textarea{min-height:100px;resize:vertical}.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--accent)}.btn{border:0;border-radius:11px;padding:12px 17px;cursor:pointer;font-weight:750}.primary{background:var(--accent);color:white}.secondary{background:#edf1ee;color:#315040}.danger{background:var(--danger);color:#8c3535}.success{background:var(--accent2);color:var(--accent)}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}.status{display:inline-flex;align-items:center;padding:6px 10px;border-radius:999px;font-size:12px;font-weight:800}.pending{background:var(--warn);color:#8b6418}.accepted{background:var(--accent2);color:var(--accent)}.rejected{background:var(--danger);color:#8c3535}.request{display:grid;grid-template-columns:1fr auto;gap:18px;align-items:center}.request+.request{border-top:1px solid var(--line);padding-top:20px;margin-top:20px}.request h3{margin:0 0 5px}.request p{margin:5px 0;color:var(--muted)}.tag{font-size:12px;background:#f0f3f0;border-radius:7px;padding:5px 8px;display:inline-block;margin-right:5px}.empty{text-align:center;padding:40px;color:var(--muted)}.notice{padding:13px 15px;border-radius:12px;background:#eef5ef;margin-bottom:20px;color:#385441;font-size:14px}.toast{position:fixed;right:22px;bottom:22px;background:#17211b;color:#fff;padding:13px 17px;border-radius:12px;display:none;box-shadow:0 10px 30px #0003;z-index:10}.footer{text-align:center;color:var(--muted);font-size:13px;margin-top:60px}
+@media(max-width:800px){.hero{grid-template-columns:1fr}.hero h1{font-size:40px}.grid{grid-template-columns:1fr}.formGrid{grid-template-columns:1fr}.field.full{grid-column:auto}.request{grid-template-columns:1fr}.nav{padding:0 18px}.navlinks button{padding:8px}.navlinks{gap:2px}}
+</style>
+</head>
+<body>
+<div class="app">
+<nav class="nav">
+  <div class="brand">Re<span>Link</span></div>
+  <div class="navlinks">
+    <button class="active" data-view="home">Home</button>
+    <button data-view="donate">Donate</button>
+    <button data-view="status">My Donations</button>
+    <button data-view="ngo">NGO Dashboard</button>
+  </div>
+</nav>
+
+<main>
+<section id="home" class="view active">
+  <div class="hero">
+    <div class="heroText">
+      <span class="eyebrow">AI-powered resource matching</span>
+      <h1>Turn unused things into useful help.</h1>
+      <p>ReLink connects people with verified organizations based on what is actually needed — helping useful resources reach the right place instead of becoming waste.</p>
+      <div class="actions"><button class="btn primary" onclick="showView('donate')">Donate an item →</button><button class="btn secondary" onclick="showView('ngo')">Open NGO demo</button></div>
+    </div>
+    <div class="heroCard">
+      <h3>How the prototype works</h3>
+      <div class="flow">
+        <div class="flowItem"><div class="icon">1</div><div><b>Upload</b><br><span class="muted">Tell us what you have</span></div></div>
+        <div class="flowItem"><div class="icon">2</div><div><b>AI Match</b><br><span class="muted">Classify and find a need</span></div></div>
+        <div class="flowItem"><div class="icon">3</div><div><b>NGO Review</b><br><span class="muted">Accept or reject the request</span></div></div>
+        <div class="flowItem"><div class="icon">4</div><div><b>Track</b><br><span class="muted">See the donation status</span></div></div>
+      </div>
+    </div>
+  </div>
+  <div class="sectionTitle"><h2>Prototype snapshot</h2></div>
+  <div class="grid">
+    <div class="card"><span class="muted">Demo donations</span><div class="stat" id="statTotal">3</div></div>
+    <div class="card"><span class="muted">Accepted</span><div class="stat" id="statAccepted">1</div></div>
+    <div class="card"><span class="muted">Awaiting NGO</span><div class="stat" id="statPending">2</div></div>
+  </div>
+</section>
+
+<section id="donate" class="view">
+  <div class="sectionTitle"><div><h2>Donate an item</h2><p class="muted">Prototype mode — AI and backend are simulated.</p></div></div>
+  <div class="card">
+    <div class="notice">For your hackathon demo, this form creates a dummy donation request. Later, connect it to your Python API.</div>
+    <div class="formGrid">
+      <div class="field"><label>Your name</label><input id="donorName" placeholder="e.g. Anshuman"></div>
+      <div class="field"><label>Location</label><input id="location" placeholder="e.g. Lucknow"></div>
+      <div class="field"><label>Item category</label><select id="category"><option>Clothes</option><option>Books</option><option>Blankets</option><option>Electronics</option><option>School Supplies</option><option>Furniture</option></select></div>
+      <div class="field"><label>Quantity</label><input id="quantity" type="number" min="1" value="1"></div>
+      <div class="field full"><label>Description</label><textarea id="description" placeholder="Describe the item and its condition..."></textarea></div>
+    </div>
+    <div class="actions"><button class="btn primary" onclick="submitDonation()">Find a match →</button></div>
+  </div>
+</section>
+
+<section id="status" class="view">
+  <div class="sectionTitle"><div><h2>My donations</h2><p class="muted">Track what happens after you submit a request.</p></div></div>
+  <div class="card" id="donationList"></div>
+</section>
+
+<section id="ngo" class="view">
+  <div class="sectionTitle"><div><h2>NGO Dashboard</h2><p class="muted">Dummy NGO interface for the presentation demo.</p></div><span class="status pending" id="pendingBadge">2 pending</span></div>
+  <div class="card">
+    <div class="notice"><b>Demo NGO:</b> Helping Hands Foundation — this is simulated data for your prototype. Replace it with your backend later.</div>
+    <div id="ngoRequests"></div>
+  </div>
+</section>
+
+<div class="footer">ReLink • Frontend prototype • Dummy data only</div>
+</main>
+<div class="toast" id="toast"></div>
+</div>
+
+<script>
+let donations = [
+ {id:"RL-1001", donor:"Rahul", location:"Lucknow", category:"Blankets", quantity:10, description:"Clean blankets in good condition.", ngo:"Helping Hands Foundation", status:"pending", created:"Today"},
+ {id:"RL-1002", donor:"Priya", location:"Lucknow", category:"Books", quantity:25, description:"School and college books.", ngo:"Helping Hands Foundation", status:"accepted", created:"Yesterday"},
+ {id:"RL-1003", donor:"Aman", location:"Kanpur", category:"Clothes", quantity:12, description:"Washed clothes, lightly used.", ngo:"Helping Hands Foundation", status:"pending", created:"Today"}
+];
+
+function showView(id){
+ document.querySelectorAll(".view").forEach(v=>v.classList.remove("active"));
+ document.getElementById(id).classList.add("active");
+ document.querySelectorAll(".nav button").forEach(b=>b.classList.toggle("active",b.dataset.view===id));
+ if(id==="status") renderDonations();
+ if(id==="ngo") renderNGO();
+ window.scrollTo({top:0,behavior:"smooth"});
+}
+document.querySelectorAll(".nav button").forEach(b=>b.addEventListener("click",()=>showView(b.dataset.view)));
+
+function submitDonation(){
+ const donor=document.getElementById("donorName").value.trim()||"Demo Donor";
+ const location=document.getElementById("location").value.trim()||"Lucknow";
+ const category=document.getElementById("category").value;
+ const quantity=Math.max(1,Number(document.getElementById("quantity").value)||1);
+ const description=document.getElementById("description").value.trim()||"Item submitted through the prototype.";
+ const id="RL-"+Math.floor(1000+Math.random()*9000);
+ donations.unshift({id,donor,location,category,quantity,description,ngo:"Helping Hands Foundation",status:"pending",created:"Just now"});
+ document.getElementById("donorName").value="";
+ document.getElementById("location").value="";
+ document.getElementById("description").value="";
+ updateStats(); showToast("Donation request sent to the demo NGO.");
+ showView("status");
+}
+
+function statusPill(s){return `<span class="status ${s}">${s[0].toUpperCase()+s.slice(1)}</span>`}
+function renderDonations(){
+ const el=document.getElementById("donationList");
+ if(!donations.length){el.innerHTML='<div class="empty">No donations yet.</div>';return}
+ el.innerHTML=donations.map(d=>`
+  <div class="request">
+   <div>
+    <h3>${escapeHTML(d.category)} <span class="tag">×${d.quantity}</span></h3>
+    <p>${escapeHTML(d.description)}</p>
+    <p><b>${escapeHTML(d.id)}</b> · ${escapeHTML(d.location)} · ${escapeHTML(d.ngo)}</p>
+   </div>
+   <div>${statusPill(d.status)}</div>
+  </div>`).join("");
+}
+function renderNGO(){
+ const el=document.getElementById("ngoRequests");
+ const pending=donations.filter(d=>d.status==="pending");
+ document.getElementById("pendingBadge").textContent=`${pending.length} pending`;
+ if(!pending.length){el.innerHTML='<div class="empty">🎉 No pending requests. All requests have been reviewed.</div>';return}
+ el.innerHTML=pending.map(d=>`
+  <div class="request">
+   <div>
+    <h3>${escapeHTML(d.category)} <span class="tag">×${d.quantity}</span></h3>
+    <p>${escapeHTML(d.description)}</p>
+    <p><b>Donor:</b> ${escapeHTML(d.donor)} · <b>Location:</b> ${escapeHTML(d.location)} · <b>ID:</b> ${escapeHTML(d.id)}</p>
+   </div>
+   <div class="actions" style="margin-top:0"><button class="btn success" onclick="review('${d.id}','accepted')">Accept</button><button class="btn danger" onclick="review('${d.id}','rejected')">Reject</button></div>
+  </div>`).join("");
+}
+function review(id,status){
+ const d=donations.find(x=>x.id===id); if(!d)return;
+ d.status=status; updateStats(); renderNGO(); showToast(`${id} marked ${status}.`);
+}
+function updateStats(){
+ document.getElementById("statTotal").textContent=donations.length;
+ document.getElementById("statAccepted").textContent=donations.filter(d=>d.status==="accepted").length;
+ document.getElementById("statPending").textContent=donations.filter(d=>d.status==="pending").length;
+}
+function showToast(msg){const t=document.getElementById("toast");t.textContent=msg;t.style.display="block";clearTimeout(window.toastTimer);window.toastTimer=setTimeout(()=>t.style.display="none",2600)}
+function escapeHTML(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]))}
+updateStats(); renderDonations();
+</script>
+</body>
+</html>
